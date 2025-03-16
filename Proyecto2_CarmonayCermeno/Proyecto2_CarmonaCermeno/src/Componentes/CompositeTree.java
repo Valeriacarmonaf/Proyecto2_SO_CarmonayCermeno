@@ -77,7 +77,12 @@ public class CompositeTree extends JTree{
                     CreationWindow folderCreateScreen = new CreationWindow(CreationWindow.IS_FOLDER, subject);
                 }
             });
-            //this.fileOption.addMouseListener(this);
+            this.fileOption.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    CreationWindow fileCreateScreen = new CreationWindow(CreationWindow.IS_FILE, subject);
+                }
+            });
             this.deleteOption.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

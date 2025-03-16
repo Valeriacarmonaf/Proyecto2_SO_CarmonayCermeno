@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,11 +39,11 @@ public class CreationWindow {
     JButton ObjectNameSubmit = new JButton();
     
     JLabel FileTypeIndicator = new JLabel();
-    JRadioButton pyTypeFile = new JRadioButton();
-    JRadioButton datTypeFile = new JRadioButton();
-    JRadioButton csvTypeFile = new JRadioButton();
-    JRadioButton binTypeFile = new JRadioButton();
-    JRadioButton customTypeFile = new JRadioButton();
+    JRadioButton pyTypeFile = new JRadioButton("'.py'");
+    JRadioButton datTypeFile = new JRadioButton("'.dat'");
+    JRadioButton csvTypeFile = new JRadioButton("'.csv'");
+    JRadioButton binTypeFile = new JRadioButton("'.bin'");
+    JRadioButton customTypeFile = new JRadioButton("Personalizado:");
     
     public CreationWindow(int objectToCreate, TreeObject recipient) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -96,6 +97,7 @@ public class CreationWindow {
                         folderName = folderName.replace(",", "");
                         if (!folderName.equals("")) {
                             try{
+                                folderName += " (Carpeta)";
                                 TreeObject newInsert = new TreeObject(folderName, false, TreeObject.IS_FOLDER);
                                 recipient.add(newInsert);
                                 submitAction();
@@ -137,7 +139,182 @@ public class CreationWindow {
                     (int)(screenSize.width * 0.4), 
                     (int)(screenSize.height * 0.3)
                 );
+                windowContainer.setTitle("Creando un archivo");
+                // Grupo de Selección de Nombre
+                JPanel fileCreateGroup = new JPanel();
+                fileCreateGroup.setSize(0, (int)(screenSize.height * 0.1));
+                fileCreateGroup.setLayout(new GridBagLayout());
+                GridBagConstraints fileCon = new GridBagConstraints();
+                fileCon.fill = GridBagConstraints.HORIZONTAL;
+                fileCreateGroup.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                
+                ObjectNameIndicator.setText("Introduzca el nombre del Archivo");
+                ObjectNameIndicator.setFont(new Font("Arial", Font.BOLD, 20));
+                ObjectNameIndicator.setForeground(MAIN_BLUE);
+                fileCon.weightx = 1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 0;
+                fileCreateGroup.add(ObjectNameIndicator, fileCon);
+                
+                ObjectNameInput = new HintTextField("Ejemplo: 'MiArchivo'");
+                fileCon.weightx = 1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 1;
+                fileCon.gridwidth = 2;
+                fileCon.insets = new Insets(0,0,15,0);
+                fileCreateGroup.add(ObjectNameInput, fileCon);
+                
+                // Grupo de Especificación de Archivo
+                FileTypeIndicator.setText("Indique el tipo de archivo");
+                FileTypeIndicator.setFont(ObjectNameIndicator.getFont());
+                FileTypeIndicator.setForeground(MAIN_BLUE);
+                fileCon.weightx = 1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 2;
+                fileCon.gridwidth = 1;
+                fileCon.insets = new Insets(0,0,0,0);
+                fileCreateGroup.add(FileTypeIndicator, fileCon);
+                
+                ButtonGroup selectorSet = new ButtonGroup();
+                selectorSet.add(pyTypeFile);
+                selectorSet.add(datTypeFile);
+                selectorSet.add(csvTypeFile);
+                selectorSet.add(binTypeFile);
+                selectorSet.add(customTypeFile);
+                
+                fileCon.weightx =  1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 3;
+                fileCon.insets = new Insets(0,10,0,0);
+                pyTypeFile.setSelected(true);
+                fileCreateGroup.add(pyTypeFile, fileCon);
+                
+                fileCon.weightx =  1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 4;
+                fileCon.insets = new Insets(0,10,0,0);
+                fileCreateGroup.add(datTypeFile, fileCon);
+                
+                fileCon.weightx =  1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 5;
+                fileCon.insets = new Insets(0,10,0,0);
+                fileCreateGroup.add(csvTypeFile, fileCon);
+                
+                fileCon.weightx =  1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 6;
+                fileCon.insets = new Insets(0,10,0,0);
+                fileCreateGroup.add(binTypeFile, fileCon);
+                
+                fileCon.weightx =  1;
+                fileCon.gridx = 0;
+                fileCon.gridy = 7;
+                fileCon.insets = new Insets(0,10,5,0);
+                fileCreateGroup.add(customTypeFile, fileCon);
+                
+                JLabel fileTypeIndicator = new JLabel("Tipo:");
+                fileTypeIndicator.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 14));
+                fileTypeIndicator.setForeground(MAIN_BLUE);
+                HintTextField fileTypeInput = new HintTextField("Ej: .jsx");
+                
+                fileCon.weightx = 0.3;
+                fileCon.gridx = 0;
+                fileCon.gridy = 8;
+                fileCon.insets = new Insets(0,0,0,0);
+                fileCreateGroup.add(fileTypeIndicator, fileCon);
+                fileCon.gridy = 9;
+                fileCreateGroup.add(fileTypeInput, fileCon);
+                
+                JLabel blockCountIndicator = new JLabel("Número de bloques:");
+                blockCountIndicator.setFont(fileTypeIndicator.getFont());
+                blockCountIndicator.setForeground(MAIN_BLUE);
+                HintTextField blockCountInput = new HintTextField("Ej: 8");
+                
+                fileCon.weightx = 0.3;
+                fileCon.gridx = 1;
+                fileCon.gridy = 8;
+                fileCon.insets = new Insets(0,10,0,0);
+                fileCreateGroup.add(blockCountIndicator, fileCon);
+                fileCon.gridy = 9;
+                fileCreateGroup.add(blockCountInput, fileCon);
+                
+                JButton fileSubmit = new JButton("Hecho");
+                fileSubmit.setBackground(MAIN_BLUE);
+                fileSubmit.setForeground(WHITE);
+                fileSubmit.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseExited(MouseEvent me) {
+                        fileSubmit.setBackground(MAIN_BLUE);}
+                    @Override
+                    public void mouseEntered(MouseEvent me) {
+                        fileSubmit.setBackground(MAIN_TEAL);
+                    }
+                    @Override
+                    public void mouseReleased(MouseEvent me) {}
+                    @Override
+                    public void mousePressed(MouseEvent me) {}
+                    @Override
+                    public void mouseClicked(MouseEvent me) {}
+                });
+                fileSubmit.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String fileName = ObjectNameInput.getText();
+                        fileName = fileName.trim();
+                        fileName = fileName.replace(".", "");
+                        fileName = fileName.replace(",", "");
+                        fileName = fileName.replace("!", "");
+                        fileName = fileName.replace("?", "");
+                        fileName = fileName.replace("¡", "");
+                        fileName = fileName.replace("¿", "");
+                        if ((!fileName.equals("")) && (!fileName.equals("Ejemplo: 'MiArchivo'"))) {
+                            // Pendiente: Uso del tamaño de bloques de un archivo
+                            if (pyTypeFile.isSelected()) {
+                                fileName += ".py";
+                            }
+                            else if (datTypeFile.isSelected()) {
+                                fileName += ".dat";
+                            }
+                            else if (csvTypeFile.isSelected()) {
+                                fileName += ".csv";
+                            }
+                            else if (binTypeFile.isSelected()) {
+                                fileName += ".bin";
+                            }
+                            else if (customTypeFile.isSelected()) {
+                                String typeEnd = fileTypeInput.getText();
+                                typeEnd = typeEnd.trim();
+                                typeEnd = typeEnd.replace(",", "");
+                                if (typeEnd.equals("")) {
+                                    typeEnd = ".custom";
+                                }
+                                else {
+                                    if (typeEnd.charAt(0) != '.') {
+                                        typeEnd = "." + typeEnd;
+                                    }
+                                }
+                                fileName += typeEnd;
+                            }
+                            try {
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                            }
+                            catch (Exception ex) {};
+                            windowContainer.dispose();
+                        }
+                    }
+                });
+                fileCon.weightx = 0.3;
+                fileCon.gridwidth = 1;
+                fileCon.anchor = GridBagConstraints.CENTER;
+                fileCon.gridx = 0;
+                fileCon.gridy = 10;
+                fileCreateGroup.add(fileSubmit, fileCon);
+                
+                windowContainer.add(fileCreateGroup);
+                windowContainer.setVisible(true);
                 break;
+
             default:
                 break;
         }

@@ -135,9 +135,9 @@ public class CreationWindow {
             case IS_FILE:
                 windowContainer.setBounds(
                     (int)(screenSize.width * 0.3),
-                    (int)(screenSize.height * 0.35),
+                    (int)(screenSize.height * 0.3),
                     (int)(screenSize.width * 0.4), 
-                    (int)(screenSize.height * 0.3)
+                    (int)(screenSize.height * 0.4)
                 );
                 windowContainer.setTitle("Creando un archivo");
                 // Grupo de Selección de Nombre

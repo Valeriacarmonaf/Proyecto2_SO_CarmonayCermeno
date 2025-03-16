@@ -33,7 +33,7 @@ public class CompositeTree extends JTree{
             }
             tree.setSelectionPath(path);
             TreeObject rightClickedNode = (TreeObject)path.getLastPathComponent();
-            if ((holder != null) && (rightClickedNode.ObjectType == TreeObject.IS_FOLDER)){
+            if (holder != null){
                 focusedNode = rightClickedNode;
                 rightClickActions.show(holder, x_coord, y_coord, focusedNode);
             }
@@ -111,6 +111,14 @@ public class CompositeTree extends JTree{
         }
         public void show(Component invoker, int x, int y, TreeObject target){
             subject = target;
+            if (subject.ObjectType == TreeObject.IS_FILE) {
+                folderOption.setVisible(false);
+                fileOption.setVisible(false);
+            }
+            else if (subject.ObjectType == TreeObject.IS_FOLDER) {
+                folderOption.setVisible(true);
+                fileOption.setVisible(true);
+            }
             super.show(invoker, x, y);
         }
     }

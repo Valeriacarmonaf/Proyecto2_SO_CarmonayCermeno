@@ -35,7 +35,7 @@ public class Lista {
         System.out.println("Lista creada correctamente.");
     }
     
-      public void agregar_nodo(int dato) {
+      public void agregar_nodo(Object dato) {
         Nodo nuevoNodo = new Nodo(dato);
         if (cabeza == null) {
             cabeza = nuevoNodo;

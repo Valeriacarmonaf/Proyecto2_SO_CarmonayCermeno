@@ -45,7 +45,7 @@ public class CreationWindow {
     JRadioButton binTypeFile = new JRadioButton("'.bin'");
     JRadioButton customTypeFile = new JRadioButton("Personalizado:");
     
-    public CreationWindow(int objectToCreate, TreeObject recipient) {
+    public CreationWindow(int objectToCreate, TreeObject recipient, CompositeTree origin) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         
         windowContainer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -101,6 +101,7 @@ public class CreationWindow {
                                 TreeObject newInsert = new TreeObject(folderName, false, TreeObject.IS_FOLDER);
                                 recipient.add(newInsert);
                                 submitAction();
+                                origin.onUpdate();
                             }
                             catch (Exception ex) {}
                         }
@@ -296,10 +297,8 @@ public class CreationWindow {
                                 }
                                 fileName += typeEnd;
                             }
-                            try {
-                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
-                            }
-                            catch (Exception ex) {};
+                            recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                            origin.onUpdate();
                             windowContainer.dispose();
                         }
                     }

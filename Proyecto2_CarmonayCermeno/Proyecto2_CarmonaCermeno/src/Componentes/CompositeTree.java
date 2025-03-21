@@ -6,8 +6,8 @@ package Componentes;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.*;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -21,7 +21,7 @@ import javax.swing.tree.*;
 public class CompositeTree extends JTree{
     actionMenu rightClickActions = actionMenu.getInstance(this);
     TreeObject focusedNode = null;
-    JFrame holder;
+    Container holder;
     MouseAdapter eventCapture = new MouseAdapter() {
         private void summonPopUp(MouseEvent e) {
             int x_coord = e.getX();
@@ -46,7 +46,12 @@ public class CompositeTree extends JTree{
         }
     };
     
-    public CompositeTree(DefaultMutableTreeNode element, JFrame holder) {
+    public void onUpdate(){
+        DefaultTreeModel myModel = (DefaultTreeModel)(this.getModel());
+        myModel.reload();
+    }
+    
+    public CompositeTree(DefaultMutableTreeNode element, Container holder) {
         super(element);
         this.holder = holder;
         this.addMouseListener(eventCapture);
@@ -57,12 +62,12 @@ public class CompositeTree extends JTree{
         JMenuItem fileOption = new JMenuItem("Añadir Archivo...");
         JMenuItem deleteOption = new JMenuItem("Eliminar Elemento");
         
-        static JTree summoner;
+        static CompositeTree summoner;
         TreeObject subject = null;
         
         private static actionMenu INSTANCE;
         
-        public static synchronized actionMenu getInstance(JTree invoker) {
+        public static synchronized actionMenu getInstance(CompositeTree invoker) {
             summoner = invoker;
             if (INSTANCE == null) {
                 INSTANCE = new actionMenu();
@@ -74,13 +79,13 @@ public class CompositeTree extends JTree{
             this.folderOption.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CreationWindow folderCreateScreen = new CreationWindow(CreationWindow.IS_FOLDER, subject);
+                    CreationWindow folderCreateScreen = new CreationWindow(CreationWindow.IS_FOLDER, subject, summoner);
                 }
             });
             this.fileOption.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CreationWindow fileCreateScreen = new CreationWindow(CreationWindow.IS_FILE, subject);
+                    CreationWindow fileCreateScreen = new CreationWindow(CreationWindow.IS_FILE, subject, summoner);
                 }
             });
             this.deleteOption.addActionListener(new ActionListener() {

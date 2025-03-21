@@ -10,20 +10,20 @@ package Primitivas;
  */
 public class Nodo {
     
-  int dato;
+  Object dato;
     Nodo siguiente;
 
     // Constructor con solo el dato, asignando null al siguiente nodo
-    public Nodo(int dato) {
+    public Nodo(Object dato) {
         this.dato = dato;
         this.siguiente = null;
     }
 
-    public int getDato() {
+    public Object getDato() {
         return dato;
     }
 
-    public void setDato(int dato) {
+    public void setDato(Object dato) {
         this.dato = dato;
     }
 

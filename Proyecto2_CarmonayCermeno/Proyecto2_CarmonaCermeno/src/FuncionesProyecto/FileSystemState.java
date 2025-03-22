@@ -4,20 +4,45 @@
  */
 package FuncionesProyecto;
 
+import Componentes.Emitter;
+import Componentes.Observer;
 import Primitivas.Lista;
 import Primitivas.Nodo;
 import Interfaces.PanelTablaArchivos;
 
 //Clase que contiene el estado actual del sistema de archivos.
 
-public class FileSystemState {
+public class FileSystemState implements Emitter{
     private boolean modoAdministrador;
     private int totalBloques;
     private int bloquesUsados;
     private Lista archivos;
     private PanelTablaArchivos panelTabla;
     
-
+    public final static int DEFAULT = -1;
+    
+    private final Lista subscribers = new Lista();
+    public int pySize = 8;
+    public int datSize = 1;
+    public int csvSize = 6;
+    public int binSize = 2;
+    
+    @Override
+    public void addObserver(Observer observer) {
+        subscribers.agregar_nodo(observer);
+    }
+    @Override 
+    public void removeObserver (Observer observer) {
+    }
+    @Override
+    public void notifyGroup() {
+        Nodo currentItem = subscribers.getCabeza();
+        while (currentItem != null) {
+            Observer localObs = (Observer)(currentItem.getDato());
+            localObs.onUpdate();
+            currentItem = currentItem.getSiguiente();
+        }
+    }
 
     public FileSystemState(int totalBloques) {
         this.modoAdministrador = false; // Por defecto inicia en modo usuario
@@ -53,14 +78,20 @@ public class FileSystemState {
 
    //AÑADIR ARCHIVO AL SISTEMA Y ACTUALIZAR LA TABLA
     
-    public void agregarArchivo(String nombre, int tamanio, int primerBloque) {
-        if (bloquesUsados + tamanio <= totalBloques) {
-            archivos.agregar_nodo(new ArchivoInfo(nombre, tamanio, primerBloque));
-            bloquesUsados += tamanio;
+    public void agregarArchivo(String nombre, int fileSize, int primerBloque) {
+        if (bloquesUsados + fileSize <= totalBloques) {
+            if (primerBloque == DEFAULT) {
+                archivos.agregar_nodo(new ArchivoInfo(nombre, fileSize, bloquesUsados));
+            }
+            else {
+                archivos.agregar_nodo(new ArchivoInfo(nombre, fileSize, primerBloque));
+            }
+            bloquesUsados += fileSize;
             if (panelTabla != null) panelTabla.actualizarTabla(); // ACTUALIZAR TABLA
         } else {
             System.out.println("No hay suficiente espacio para agregar el archivo: " + nombre);
         }
+        notifyGroup();
     }
 
 
@@ -85,6 +116,7 @@ public class FileSystemState {
             previo = temp;
             temp = temp.getSiguiente();
         }
+        notifyGroup();
     }
 
 

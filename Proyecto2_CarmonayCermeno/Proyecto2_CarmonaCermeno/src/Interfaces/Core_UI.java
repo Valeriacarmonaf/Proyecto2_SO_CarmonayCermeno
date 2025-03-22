@@ -4,6 +4,7 @@
  */
 package Interfaces;
 
+import FuncionesProyecto.FileSystemState;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,22 +27,22 @@ public class Core_UI extends JFrame {
     final Color MAIN_PINK = new Color(255, 130, 169);
     final Color MAIN_TEAL = new Color(80,137,145);
     final Color WHITE = new Color(255, 255, 255);
+    
+    final FileSystemState systemRef = new FileSystemState(128);
     public Core_UI() {
         viewSelector = new SelectorView();
         viewContainer.setLayout(new CardLayout());
         
-        FileManagerView fileView = new FileManagerView(this);
+        FileManagerView fileView = new FileManagerView(this, systemRef);
         
-        JPanel fakePanel2 = new JPanel();
-        fakePanel2.setBackground(WHITE);
-        fakePanel2.add(new JLabel("VistaTablas"));
+        PanelTablaArchivos tableView = new PanelTablaArchivos(systemRef);
         
         JPanel fakePanel3 = new JPanel();
         fakePanel3.setBackground(WHITE);
         fakePanel3.add(new JLabel("VistaBloques"));
         
         viewContainer.add("Principal", fileView);
-        viewContainer.add("Tablas", fakePanel2);
+        viewContainer.add("Tablas", tableView);
         viewContainer.add("Bloques", fakePanel3);
         
         this.setBounds(0, 0, 800, 800);

@@ -13,20 +13,11 @@ import Primitivas.Nodo;
  *
  * @author valery
  */
-public class PanelTablaArchivos extends javax.swing.JPanel {
+public class PanelTablaArchivos extends JPanel {
     
     private JTable tablaArchivos;
     private DefaultTableModel modeloTabla;
     private FileSystemState sistema;
-
-    /**
-     * Creates new form PanelTablaArchivos
-     */
-    
-    /** 
-     * Constructor del PanelTablaArchivos
-     * @param sistema Referencia al estado del sistema de archivos
-     */
     
     public PanelTablaArchivos(FileSystemState sistema) {
          this.sistema = sistema;

@@ -4,6 +4,7 @@
  */
 package Componentes;
 
+import FuncionesProyecto.FileSystemState;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,6 +33,8 @@ public class CreationWindow {
     final Color MAIN_TEAL = new Color(80,137,145);
     final Color WHITE = new Color(255, 255, 255);
     
+    private FileSystemState systemRef;
+    
     JFrame windowContainer = new JFrame();
     
     JLabel ObjectNameIndicator = new JLabel();
@@ -45,7 +48,8 @@ public class CreationWindow {
     JRadioButton binTypeFile = new JRadioButton("'.bin'");
     JRadioButton customTypeFile = new JRadioButton("Personalizado:");
     
-    public CreationWindow(int objectToCreate, TreeObject recipient, CompositeTree origin) {
+    public CreationWindow(int objectToCreate, TreeObject recipient, CompositeTree origin, FileSystemState sysRef) {
+        systemRef = sysRef;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         
         windowContainer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -270,18 +274,25 @@ public class CreationWindow {
                         fileName = fileName.replace("¡", "");
                         fileName = fileName.replace("¿", "");
                         if ((!fileName.equals("")) && (!fileName.equals("Ejemplo: 'MiArchivo'"))) {
-                            // Pendiente: Uso del tamaño de bloques de un archivo
                             if (pyTypeFile.isSelected()) {
                                 fileName += ".py";
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                                origin.onUpdate(fileName, systemRef.pySize, CompositeTree.ADDED_FILE);
                             }
                             else if (datTypeFile.isSelected()) {
                                 fileName += ".dat";
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                                origin.onUpdate(fileName, systemRef.datSize, CompositeTree.ADDED_FILE);
                             }
                             else if (csvTypeFile.isSelected()) {
                                 fileName += ".csv";
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                                origin.onUpdate(fileName, systemRef.csvSize, CompositeTree.ADDED_FILE);
                             }
                             else if (binTypeFile.isSelected()) {
                                 fileName += ".bin";
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                                origin.onUpdate(fileName, systemRef.binSize, CompositeTree.ADDED_FILE);
                             }
                             else if (customTypeFile.isSelected()) {
                                 String typeEnd = fileTypeInput.getText();
@@ -296,9 +307,13 @@ public class CreationWindow {
                                     }
                                 }
                                 fileName += typeEnd;
+                                int blockCount = 0;
+                                if (blockCountInput.getText().matches("[0-9]+") && blockCountInput.getText().length() > 0) {
+                                    blockCount += Integer.parseInt(blockCountInput.getText());
+                                }
+                                recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
+                                origin.onUpdate(fileName, blockCount, CompositeTree.ADDED_FILE);
                             }
-                            recipient.add(new TreeObject(fileName, false, TreeObject.IS_FILE));
-                            origin.onUpdate();
                             windowContainer.dispose();
                         }
                     }

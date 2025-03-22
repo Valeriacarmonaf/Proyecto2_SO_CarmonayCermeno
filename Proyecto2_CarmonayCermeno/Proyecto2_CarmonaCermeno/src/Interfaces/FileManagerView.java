@@ -1,7 +1,9 @@
 package Interfaces;
 
 import Componentes.CompositeTree;
+import Componentes.Observer;
 import Componentes.TreeObject;
+import FuncionesProyecto.FileSystemState;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -27,6 +29,7 @@ import javax.swing.JTextField;
  */
 public class FileManagerView extends JPanel{
     GridBagLayout viewLayout = new GridBagLayout();
+    private FileSystemState systemState;
     
     final Color MAIN_BLUE = new Color(42, 12, 78);
     final Color MAIN_PURPLE = new Color(81,53,90);
@@ -38,10 +41,12 @@ public class FileManagerView extends JPanel{
     
     MainDisplay mainDisplay;
     ModeSwitchDisplay controlDisplay = new ModeSwitchDisplay();
-    BlockUsageDisplay blockDisplay = new BlockUsageDisplay();
+    BlockUsageDisplay blockDisplay;
     SettingsDisplay settingsDisplay = new SettingsDisplay();
-    public FileManagerView(JFrame container) {
+    public FileManagerView(JFrame container, FileSystemState system) {
+        this.systemState = system;
         mainDisplay = new MainDisplay(container);
+        blockDisplay = new BlockUsageDisplay();
         
         this.setLayout(viewLayout);
         GridBagConstraints localConstraints = new GridBagConstraints();
@@ -142,7 +147,7 @@ public class FileManagerView extends JPanel{
             this.add(bottom, internalConstraints);
             
             treeHolder.setLayout(new BorderLayout());
-            treeHolder.add(new CompositeTree(new TreeObject("(Raiz del Sistema)", true, TreeObject.IS_FOLDER), treeHolder));
+            treeHolder.add(new CompositeTree(new TreeObject("(Raiz del Sistema)", true, TreeObject.IS_FOLDER), treeHolder, systemState));
         }
     }
     private class ModeSwitchDisplay extends JPanel {
@@ -222,11 +227,12 @@ public class FileManagerView extends JPanel{
             }
         }
     }
-    private class BlockUsageDisplay extends JPanel {
+    private class BlockUsageDisplay extends JPanel implements Observer{
         JProgressBar progressShowcase = new JProgressBar(JProgressBar.HORIZONTAL);
         JLabel blockUsage = new JLabel("Bloques Utilizados");
         GridBagLayout localLayout = new GridBagLayout();
         public BlockUsageDisplay() {
+            systemState.addObserver(this);
             JPanel bottom = new JPanel();
             JPanel right = new JPanel();
             
@@ -263,6 +269,14 @@ public class FileManagerView extends JPanel{
             right.setBackground(TRANSPARENT);
             this.add(right, localConstraints);
             
+        }
+        @Override
+        public void onUpdate() {
+            int allBlocks = systemState.getTotalBloques();
+            int usedBlocks = systemState.getBloquesUsados();
+            float currentUsage = (float)usedBlocks / (float)allBlocks;
+            currentUsage = currentUsage * 100;
+            progressShowcase.setValue((int)currentUsage);
         }
     }
     private class SettingsDisplay extends JPanel {

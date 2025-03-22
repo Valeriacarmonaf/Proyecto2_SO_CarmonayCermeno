@@ -17,7 +17,7 @@ public class TreeObject extends DefaultMutableTreeNode{
     public static final int IS_FOLDER = 1;
     public final boolean IS_SYSTEM_ROOT;
     public final int ObjectType;
-    public TreeObject(String descriptor, boolean sysRoot, int objectType) throws Exception{
+    public TreeObject(String descriptor, boolean sysRoot, int objectType) {
         super(descriptor);
         IS_SYSTEM_ROOT = sysRoot;
         switch(objectType) {
@@ -30,7 +30,8 @@ public class TreeObject extends DefaultMutableTreeNode{
                 this.ObjectType = objectType;
                 break;
             default:
-                throw new Exception("Tipo de objeto no reconocido.");
+                this.ObjectType = -1;
+                break;
         }
     }
 }

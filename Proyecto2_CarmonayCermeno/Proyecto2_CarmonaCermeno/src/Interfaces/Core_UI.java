@@ -30,9 +30,7 @@ public class Core_UI extends JFrame {
         viewSelector = new SelectorView();
         viewContainer.setLayout(new CardLayout());
         
-        JPanel fakePanel1 = new JPanel();
-        fakePanel1.setBackground(WHITE);
-        fakePanel1.add(new JLabel("VistaGeneral"));
+        FileManagerView fileView = new FileManagerView(this);
         
         JPanel fakePanel2 = new JPanel();
         fakePanel2.setBackground(WHITE);
@@ -42,7 +40,7 @@ public class Core_UI extends JFrame {
         fakePanel3.setBackground(WHITE);
         fakePanel3.add(new JLabel("VistaBloques"));
         
-        viewContainer.add("Principal", fakePanel1);
+        viewContainer.add("Principal", fileView);
         viewContainer.add("Tablas", fakePanel2);
         viewContainer.add("Bloques", fakePanel3);
         

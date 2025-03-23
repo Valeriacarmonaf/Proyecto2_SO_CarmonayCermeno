@@ -38,7 +38,7 @@ public class CompositeTree extends JTree{
             }
             tree.setSelectionPath(path);
             TreeObject rightClickedNode = (TreeObject)path.getLastPathComponent();
-            if (holder != null){
+            if ((holder != null) && (systemRef.isModoAdministrador())){
                 focusedNode = rightClickedNode;
                 rightClickActions.show(holder, x_coord, y_coord, focusedNode);
             }

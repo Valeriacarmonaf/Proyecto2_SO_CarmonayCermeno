@@ -39,13 +39,11 @@ public class Core_UI extends JFrame {
         PanelTablaArchivos tableView = new PanelTablaArchivos(systemRef);
         systemRef.addObserver(tableView);
         
-        JPanel fakePanel3 = new JPanel();
-        fakePanel3.setBackground(WHITE);
-        fakePanel3.add(new JLabel("VistaBloques"));
+        VistaBloques blocksView = new VistaBloques();
         
         viewContainer.add("Principal", fileView);
         viewContainer.add("Tablas", tableView);
-        viewContainer.add("Bloques", fakePanel3);
+        viewContainer.add("Bloques", blocksView);
         
         this.setBounds(0, 0, 800, 800);
         this.setLayout(new GridBagLayout());

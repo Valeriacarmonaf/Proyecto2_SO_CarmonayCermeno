@@ -4,6 +4,7 @@
  */
 package Interfaces;
 
+import Componentes.Observer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import FuncionesProyecto.FileSystemState;
@@ -13,7 +14,7 @@ import Primitivas.Nodo;
  *
  * @author valery
  */
-public class PanelTablaArchivos extends JPanel {
+public class PanelTablaArchivos extends JPanel implements Observer {
     
     private JTable tablaArchivos;
     private DefaultTableModel modeloTabla;
@@ -32,6 +33,11 @@ public class PanelTablaArchivos extends JPanel {
         // Agregar la tabla dentro de un JScrollPane para permitir desplazamiento
         setLayout(new BorderLayout());
         add(new JScrollPane(tablaArchivos), BorderLayout.CENTER);
+    }
+    
+        @Override
+    public void onUpdate() {
+        actualizarTabla();
     }
     
     public void actualizarTabla() {

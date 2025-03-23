@@ -29,6 +29,7 @@ public class Core_UI extends JFrame {
     final Color WHITE = new Color(255, 255, 255);
     
     final FileSystemState systemRef = new FileSystemState(128);
+    
     public Core_UI() {
         viewSelector = new SelectorView();
         viewContainer.setLayout(new CardLayout());
@@ -36,6 +37,7 @@ public class Core_UI extends JFrame {
         FileManagerView fileView = new FileManagerView(this, systemRef);
         
         PanelTablaArchivos tableView = new PanelTablaArchivos(systemRef);
+        systemRef.addObserver(tableView);
         
         JPanel fakePanel3 = new JPanel();
         fakePanel3.setBackground(WHITE);

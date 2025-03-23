@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,13 +41,15 @@ public class FileManagerView extends JPanel{
     final Color TRANSPARENT = new Color(0,0,0,0);
     
     MainDisplay mainDisplay;
-    ModeSwitchDisplay controlDisplay = new ModeSwitchDisplay();
+    ModeSwitchDisplay controlDisplay;
     BlockUsageDisplay blockDisplay;
-    SettingsDisplay settingsDisplay = new SettingsDisplay();
+    SettingsDisplay settingsDisplay;
     public FileManagerView(JFrame container, FileSystemState system) {
         this.systemState = system;
+        controlDisplay = new ModeSwitchDisplay();
         mainDisplay = new MainDisplay(container);
         blockDisplay = new BlockUsageDisplay();
+        settingsDisplay = new SettingsDisplay();
         
         this.setLayout(viewLayout);
         GridBagConstraints localConstraints = new GridBagConstraints();
@@ -213,6 +216,7 @@ public class FileManagerView extends JPanel{
                     adminMode.setForeground(WHITE);
                     userMode.setBackground(MAIN_BEIGE);
                     userMode.setForeground(MAIN_BLUE);
+                    systemState.setModoAdministrador(true);
                     break;
                 case 1:
                     adminMode.setEnabled(true);
@@ -221,6 +225,7 @@ public class FileManagerView extends JPanel{
                     adminMode.setForeground(MAIN_BLUE);
                     userMode.setBackground(MAIN_TEAL);
                     userMode.setForeground(WHITE);
+                    systemState.setModoAdministrador(false);
                     break;
                 default:
                     break;
@@ -316,6 +321,8 @@ public class FileManagerView extends JPanel{
             JPanel blockRight = new JPanel();
             blockRight.setBackground(TRANSPARENT);
             blockControlGroup.setLayout(new GridBagLayout());
+            blockMaxInput.setEditable(false);
+            blockMaxInput.setText(String.valueOf(systemState.getTotalBloques()));
             SettingsItem blockMaxGroup = new SettingsItem(blockMaxInput, "Bloques del Sistema:", MAIN_TEAL);
             SettingsItem folderBlocksGroup = new SettingsItem(folderBlocksInput, "Bloques de una Carpeta:", MAIN_TEAL);
             
@@ -346,6 +353,15 @@ public class FileManagerView extends JPanel{
             thisConstraints.weightx = 1;
             thisConstraints.weighty = 0.15;
             this.add(blockControlGroup, thisConstraints);
+            
+            pySize.setEditable(false);
+            pySize.setText(String.valueOf(systemState.pySize));
+            datSize.setEditable(false);
+            datSize.setText(String.valueOf(systemState.datSize));
+            csvSize.setEditable(false);
+            csvSize.setText(String.valueOf(systemState.csvSize));
+            binSize.setEditable(false);
+            binSize.setText(String.valueOf(systemState.binSize));
             
             SettingsItem pySizeGroup = new SettingsItem (pySize, "'.py'", MAIN_PINK);
             SettingsItem datSizeGroup = new SettingsItem (datSize, "'.dat'", MAIN_PINK);
